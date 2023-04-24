@@ -1,5 +1,5 @@
 # Open image
-with open("recursos/02.pbm", "r") as file:
+with open("recursos/01.pbm", "r") as file:
 
   # Getting the header
   header = []
@@ -9,7 +9,6 @@ with open("recursos/02.pbm", "r") as file:
     header.append(linha.strip())
     if len(header) == 2:
       break
-  # print(header)
 
   # Getting header informations
   format = header[0]
@@ -19,19 +18,19 @@ with open("recursos/02.pbm", "r") as file:
   pixels = []
 
   # Percorro para cada linha
-  for line in file:
-    row = line.strip() # linha
-    arr = row.split() # transformo em array
+  for linha in file:
+    row = linha.strip() # linha
+    arr = list(row)
     pixels.append(arr)
     
 
-  # Saving a new image in a new .ppm ASCII file
-  with open("resultado/nova_imagem.pbm", "w") as newFile:
-    # Write header
-    newFile.write(format + '\n')
-    newFile.write('{} {}\n'.format(width, height))
+# Saving a new image in a new .ppm ASCII file
+with open("resultado/nova_imagem.pbm", "w") as newFile:
+  # Write header
+  newFile.write(format + '\n')
+  newFile.write('{} {}\n'.format(width, height))
 
-    for pixel in pixels:
-      for p in pixel:
-        newFile.write(f"{p}")
-      newFile.write("\n")
+  for pixel in pixels:
+    for p in pixel:
+      newFile.write(f"{p}")
+    newFile.write("\n")
