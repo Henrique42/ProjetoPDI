@@ -1,5 +1,5 @@
 # Open image
-with open("02.pbm", "r") as file:
+with open("recursos/02.pbm", "r") as file:
 
   # Getting the header
   header = []
