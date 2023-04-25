@@ -1,5 +1,5 @@
-from imagem import Imagem_PBM
-from operacoes import Contagem
+from Contagem.imagem import Imagem_PBM
+from Contagem.operacoes import Contador
 # import numpy as np
 
 
@@ -9,7 +9,7 @@ from operacoes import Contagem
 def carregaImagem(imagem):
   try:
     nome = input('Informe o nome do arquivo (sem a extensão): ')
-    filename = 'Recursos/' + nome + '.pbm'
+    filename = 'Testes/' + nome + '.pbm'
     
     # Abrir imagem
     with open(filename, "r") as file:
@@ -84,6 +84,6 @@ if __name__ == '__main__':
   imagem = carregaImagem(imagem)
   
   if imagem is not None:
-    #salvarImagem(imagem)
-    print(f"Figuras encontradas: {Contagem.contarFiguras(imagem)}")
+    salvarImagem(imagem)
+    print(f"Figuras encontradas: {Contador.contarFiguras(imagem)}")
     

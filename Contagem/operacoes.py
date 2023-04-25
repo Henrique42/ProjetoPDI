@@ -1,7 +1,7 @@
 """
     A classe Contagem define os métodos de contagem de figuras
 """
-class Contagem:
+class Contador:
     """
         Método que marca pixelss adjacentes.
         Recebe a imagem e as coordenadas do pixel em questão.
@@ -43,7 +43,7 @@ class Contagem:
                     # Se o pixel atual for preto, aumentar a contagem e marcar os conectados
                     if imagem.pixels[i][j] == 1:
                         count += 1
-                        Contagem.marcar_conectados(imagem, i, j)
+                        Contador.marcar_conectados(imagem, i, j)
         
         except Exception as erro:
             print(f"Erro: {erro}")
