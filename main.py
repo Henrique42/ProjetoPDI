@@ -1,6 +1,5 @@
 from Contagem.imagem import Imagem_PBM
 from Contagem.operacoes import Contador
-# import numpy as np
 
 
 """
@@ -36,11 +35,6 @@ def carregaImagem(imagem):
         for j in range(imagem.largura):
           linha.append(bits[i*imagem.largura + j])
         imagem.pixels.append(linha)
-
-      """
-      Alternativa:
-      imagem.pixels = np.array(bits).reshape((imagem.altura, imagem.largura))
-      """
       
       print(f"Imagem {filename} carregada com sucesso!")
 
@@ -84,6 +78,6 @@ if __name__ == '__main__':
   imagem = carregaImagem(imagem)
   
   if imagem is not None:
-    salvarImagem(imagem)
-    print(f"Figuras encontradas: {Contador.contarFiguras(imagem)}")
+    print(f"Figuras: {Contador.contarFiguras(imagem)}")
+    #salvarImagem(imagem)
     

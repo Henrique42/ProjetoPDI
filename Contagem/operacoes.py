@@ -7,7 +7,7 @@ class Contador:
         Recebe a imagem e as coordenadas do pixel em questão.
     """
     @staticmethod
-    def marcar_conectados(imagem, i, j):
+    def marcar_conectados(imagem, i, j, label):
         # Pilha para saber se ainda existem pixels que precisam ser marcados
         pilha = [(i, j)]
         
@@ -16,7 +16,7 @@ class Contador:
             # Se o pixel for preto:
             if imagem.pixels[x][y] == 1:
                 # Marcar como visitado
-                imagem.pixels[x][y] = -1
+                imagem.pixels[x][y] = label
                 # Checagem da vizinhança 4
                 for dx, dy in [(0, 1), (0, -1), (1, 0), (-1, 0)]:
                     # Obtem as coordenadas do pixel adjacente
@@ -43,7 +43,7 @@ class Contador:
                     # Se o pixel atual for preto, aumentar a contagem e marcar os conectados
                     if imagem.pixels[i][j] == 1:
                         count += 1
-                        Contador.marcar_conectados(imagem, i, j)
+                        Contador.marcar_conectados(imagem, i, j, count + 1)
         
         except Exception as erro:
             print(f"Erro: {erro}")
