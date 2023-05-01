@@ -1,7 +1,7 @@
 class Imagem_PBM:
     def __init__(self, formato=None, largura=None, altura=None, pixels=None):
         """
-        Cria um novo objeto Imagem_PBM.
+        Cria uma nova Imagem_PBM.
 
         :param formato: o formato da imagem (P1)
         :type formato: str

@@ -1,12 +1,13 @@
 """
-    A classe Contagem define os métodos de contagem de figuras
+    A classe Contagem define os métodos de contagem de objetos
 """
 class Contador:
+
     """
-        Método que marca pixelss adjacentes.
-        Recebe a imagem e as coordenadas do pixel em questão.
+        Método que marca pixels adjacentes de um certo tipo.
+
             Recebe:
-                - imagem: objeto Imagem_PBM
+                - imagem: uma Imagem_PBM
                 - i: coordenada x da posição na qual se encontra o pixel
                 - j: coordenada y da posição na qual se encontra o pixel
                 - label: numeração do objeto
@@ -62,9 +63,35 @@ class Contador:
 
 
     """
-        Método que adiciona um padding de 1 na imagem.
+        Método que conta quantos objetos existem na imagem.
+
             Recebe:
-                - imagem: objeto Imagem_PBM
+                - imagem: uma Imagem_PBM
+            Retorna:
+                - Quantidade de objetos na imagem.
+    """
+    @staticmethod
+    def contar_objetos(imagem):
+        # Variável de contagem
+        cont = 0
+
+        # Verificar cada pixel da imagem
+        for i in range(imagem.altura):
+            for j in range(imagem.largura):
+                # Se o pixel atual for preto, aumentar a contagem e marcar os conectados
+                 if imagem.pixels[i][j] == 1:
+                    cont += 1
+                    Contador.marcar_conectados(imagem, i, j, cont + 1, 1)
+
+        # Retornar contagem
+        return cont
+
+
+    """
+        Método que adiciona um padding de 1 na imagem.
+
+            Recebe:
+                - imagem: uma Imagem_PBM
             Retorna:
                 - None
     """
@@ -89,14 +116,21 @@ class Contador:
 
     """
         Método que verifica a quantidade de buracos nos objetos de uma imagem
+
             Recebe:
-                - imagem: objeto Imagem_PBM
-                - resultados: vetor que guarda quantos buracos existem em cada objeto
+                - imagem: uma Imagem_PBM
+                - cont: quantidade de objetos na imagem
             Retorna:
-                - None
+                - Uma lista com a quantidade de buracos para cada objeto.
     """
     @staticmethod
-    def tem_buracos(imagem, resultados):
+    def contar_buracos(imagem, cont):
+        # Criação e inicialização da lista de resultados
+        resultados = []
+
+        for i in range(cont):
+            resultados.append(0)
+        
         # Verificar cada pixel da imagem
         for i in range(imagem.altura):
             for j in range(imagem.largura):
@@ -104,32 +138,22 @@ class Contador:
                  if imagem.pixels[i][j] == 0:
                     Contador.marcar_conectados(imagem, i, j, -2, 0, resultados)
 
+        # Retornar lista da quantidade de buracos para cada objeto.
+        return resultados
+
 
     """
-        Método que conta quantas figuras existem na imagem.
+        Método que chama os métodos de contagem de objetos e buracos na ordem correta.
+
             Recebe:
-                - imagem: objeto Imagem_PBM
+                - imagem: uma Imagem_PBM
             Retorna:
-                - Quantidade de objetos na imagem.
+                - Lista da quantidade de buracos para cada objeto.
     """
     @staticmethod
-    def contarFiguras(imagem):
-        # Variável de contagem
-        count = 0
-
-        # Verificar cada pixel da imagem
-        for i in range(imagem.altura):
-            for j in range(imagem.largura):
-                # Se o pixel atual for preto, aumentar a contagem e marcar os conectados
-                 if imagem.pixels[i][j] == 1:
-                    count += 1
-                    Contador.marcar_conectados(imagem, i, j, count + 1, 1)
-
-        # Criação e inicialização da matriz de resultados
-        resultados = []
-
-        for i in range(count):
-            resultados.append(0)
+    def iniciar_contagem(imagem):
+        # Variável de contagem de objetos
+        cont = Contador.contar_objetos(imagem)
 
         # Adicionar padding na imagem
         Contador.adicionar_padding(imagem)
@@ -137,9 +161,6 @@ class Contador:
         # Preencher o fundo com -1
         Contador.marcar_conectados(imagem)
 
-        # Chamar método de contar buracos
-        Contador.tem_buracos(imagem, resultados)
-
-        # Retornar contagem
-        return resultados
+        # Retornar o resultado do método de contar buracos
+        return Contador.contar_buracos(imagem, cont)
     

@@ -4,10 +4,11 @@ from Contagem.operacoes import Contador
 
 """
   Método que carrega uma imagem .pbm
+
   Recebe:
-    - imagem: objeto Imagem_PBM vazio que será preenchido com os dados da imagem carregada
+    - imagem: uma Imagem_PBM vazia que será preenchida com os dados da imagem carregada
   Retorna:
-    - objeto Imagem_PBM preenchido com os dados da imagem carregada ou None em caso de erro
+    - uma Imagem_PBM preenchida com os dados da imagem carregada ou None em caso de erro
 """
 def carregaImagem(imagem):
   try:
@@ -50,8 +51,9 @@ def carregaImagem(imagem):
 
 """
   Método que recebe um objeto imagem e o salva como um arquivo .pbm
+
   Recebe:
-    - imagem: objeto Imagem_PBM que será salvo no arquivo
+    - imagem: uma Imagem_PBM para ser salva no arquivo
   Retorna:
     - None
 """
@@ -72,7 +74,7 @@ def salvarImagem(imagem):
 
 
 """
-  Inicialização do sistema, carregando uma imagem e retornando a quantidade de figuras presentes.
+  Inicialização do sistema, carregando uma imagem e retornando a quantidade de objetos presentes.
 """
 if __name__ == '__main__':
   imagem = Imagem_PBM()
@@ -83,17 +85,17 @@ if __name__ == '__main__':
   
   if imagem is not None:
     print("Esperando resultados...\n")
-    # Receber resultados da contagem de figuras e buracos
-    resultados = Contador.contarFiguras(imagem)
+    # Receber resultados da contagem de objetos e buracos
+    resultados = Contador.iniciar_contagem(imagem)
     tamanho = len(resultados)
 
     # Imprimir resultados
     print("--------------------------------------")
-    print(f"=> Total: {tamanho} figura(s)")
+    print(f"=> Total: {tamanho} objeto(s)")
     print("--------------------------------------")
 
     for i in range(tamanho):
-      print(f"> A figura {i + 1} contém {resultados[i]} buraco(s)")
+      print(f"> O objeto {i + 1} contém {resultados[i]} buraco(s)")
 
     print("--------------------------------------")
     print("\nExecução finalizada!")
