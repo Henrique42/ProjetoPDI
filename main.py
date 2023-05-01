@@ -84,10 +84,11 @@ if __name__ == '__main__':
   #salvarImagem(imagem)
   
   if imagem is not None:
-    print("Esperando resultados...\n")
+    print("\nEsperando resultados...\n")
     # Receber resultados da contagem de objetos e buracos
     resultados = Contador.iniciar_contagem(imagem)
     tamanho = len(resultados)
+    cont = 0
 
     # Imprimir resultados
     print("--------------------------------------")
@@ -95,8 +96,18 @@ if __name__ == '__main__':
     print("--------------------------------------")
 
     for i in range(tamanho):
-      print(f"> O objeto {i + 1} contém {resultados[i]} buraco(s)")
+      atual = resultados[i]
+      print(f"> O objeto '{i + 1}' contém {atual} buraco(s)")
+
+      # Contar quantos objetos não possuem buracos
+      if atual == 0:
+        cont += 1
 
     print("--------------------------------------")
-    print("\nExecução finalizada!")
+
+    print(f"=> Objetos SEM buraco: {cont}")
+    print(f"=> Objetos COM buraco: {tamanho - cont}")
+    print("--------------------------------------")
+
+    print("\nExecução finalizada!\n")
     

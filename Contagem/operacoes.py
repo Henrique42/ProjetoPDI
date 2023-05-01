@@ -88,7 +88,7 @@ class Contador:
 
 
     """
-        Método que adiciona um padding de 1 na imagem.
+        Método que adiciona padding de 1 pixel na imagem.
 
             Recebe:
                 - imagem: uma Imagem_PBM
@@ -98,19 +98,21 @@ class Contador:
     @staticmethod
     def adicionar_padding(imagem):
         imagem_padding = []
-        # Adicionar padding de 1
-        for i in range(imagem.altura+2):
-            if i == 0 or i == imagem.altura+1:
+        # Definir novas altura e largura
+        imagem.altura += 2
+        imagem.largura += 2
+        
+        # Adicionar padding de 1 pixel
+        for i in range(imagem.altura):
+            if i == 0 or i == imagem.altura - 1:
                 # Adicionar padding na primeira e na última linha
-                imagem_padding.append([0]*(imagem.largura+2))
+                imagem_padding.append([0]*(imagem.largura))
             else:
                 # Adicionar padding na coluna da esquerda e da direita
                 row = [0] + imagem.pixels[i-1] + [0]
                 imagem_padding.append(row)
 
-        # Substituir os valores da imagem anterior pelos da nova imagem
-        imagem.altura += 2
-        imagem.largura += 2
+        # Substituir os pixels da imagem anterior pelos da imagem com padding
         imagem.pixels = imagem_padding
 
 
@@ -155,12 +157,17 @@ class Contador:
         # Variável de contagem de objetos
         cont = Contador.contar_objetos(imagem)
 
-        # Adicionar padding na imagem
-        Contador.adicionar_padding(imagem)
+        # Caso não existam objetos na imagem
+        if cont == 0:
+            return []
+        # Caso existam
+        else:
+            # Adicionar padding na imagem
+            Contador.adicionar_padding(imagem)
 
-        # Preencher o fundo com -1
-        Contador.marcar_conectados(imagem)
+            # Preencher o fundo com -1
+            Contador.marcar_conectados(imagem)
 
-        # Retornar o resultado do método de contar buracos
-        return Contador.contar_buracos(imagem, cont)
+            # Retornar o resultado do método de contar buracos
+            return Contador.contar_buracos(imagem, cont)
     
