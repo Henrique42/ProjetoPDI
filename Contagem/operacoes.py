@@ -134,7 +134,7 @@ class Contador:
         # Verificar cada pixel da imagem
         for i in range(imagem.altura):
             for j in range(imagem.largura):
-                # Se o pixel atual for preto, aumentar a contagem e marcar os conectados
+                # Se o pixel atual for branco, aumentar a contagem e marcar os conectados
                  if imagem.pixels[i][j] == 0:
                     Contador.marcar_conectados(imagem, i, j, -2, 0, resultados)
 
