@@ -76,10 +76,25 @@ def salvarImagem(imagem):
 """
 if __name__ == '__main__':
   imagem = Imagem_PBM()
+  # Carregar imagem
   imagem = carregaImagem(imagem)
+  # Salvar nova imagem
   #salvarImagem(imagem)
   
   if imagem is not None:
-    quantidade = Contador.contarFiguras(imagem)
-    print(f"Figuras: {quantidade}")
+    print("Esperando resultados...")
+    # Receber resultados da contagem de figuras e buracos
+    resultados = Contador.contarFiguras(imagem)
+    tamanho = len(resultados)
+
+    # Imprimir resultados
+    print("--------------------------------------")
+    print(f"=> Total: {tamanho} figuras")
+    print("--------------------------------------")
+
+    for i in range(tamanho):
+      print(f"> A figura {i + 1} contém {resultados[i]} buracos")
+
+    print("--------------------------------------")
+    print("\nExecução finalizada")
     
