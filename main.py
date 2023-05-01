@@ -82,19 +82,19 @@ if __name__ == '__main__':
   #salvarImagem(imagem)
   
   if imagem is not None:
-    print("Esperando resultados...")
+    print("Esperando resultados...\n")
     # Receber resultados da contagem de figuras e buracos
     resultados = Contador.contarFiguras(imagem)
     tamanho = len(resultados)
 
     # Imprimir resultados
     print("--------------------------------------")
-    print(f"=> Total: {tamanho} figuras")
+    print(f"=> Total: {tamanho} figura(s)")
     print("--------------------------------------")
 
     for i in range(tamanho):
-      print(f"> A figura {i + 1} contém {resultados[i]} buracos")
+      print(f"> A figura {i + 1} contém {resultados[i]} buraco(s)")
 
     print("--------------------------------------")
-    print("\nExecução finalizada")
+    print("\nExecução finalizada!")
     

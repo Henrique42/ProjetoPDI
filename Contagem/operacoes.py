@@ -11,18 +11,23 @@ class Contador:
                 - j: coordenada y da posição na qual se encontra o pixel
                 - label: numeração do objeto
                 - alvo: valor do pixel a ser considerado
+                - resultados: vetor que guarda quantos buracos existem em cada objeto
             Retorna:
                 - None
     """
     @staticmethod
-    def marcar_conectados(imagem, i, j, label, alvo):
+    def marcar_conectados(imagem, i = 0, j = 0, label = -1, alvo = 0, resultados = None):
         # Pilha para saber se ainda existem pixels que precisam ser marcados
         pilha = [(i, j)]
+        buraco_encontrado = False
+        buraco_label = 0
         vizinhaca = []
 
         # Definição da vizinhaça a ser analisada
+        # Caso o alvo seja um objeto:
         if alvo == 1:
-            vizinhaca = [(0, 1), (0, -1), (1, 0), (-1, 0)]
+            vizinhaca = [(0, 1), (0, -1), (1, 0), (-1, 0), (1, -1), (1, 1), (-1, -1), (-1, 1)]
+        # Caso o alvo seja o fundo ou um buraco:
         elif alvo == 0:
             vizinhaca = [(0, 1), (0, -1), (1, 0), (-1, 0)]
         
@@ -38,10 +43,22 @@ class Contador:
                 for dx, dy in vizinhaca:
                     # Obtem as coordenadas do pixel adjacente
                     nx, ny = x + dx, y + dy
-                    # Se o pixel adjacente não tiver sido visitado:
-                    if 0 <= nx < imagem.altura and 0 <= ny < imagem.largura and imagem.pixels[nx][ny] == alvo:
-                        # Adiciona o pixel adjacente na pilha
-                        pilha.append((nx, ny))
+                    # Se o pixel pertence a imagem:
+                    if 0 <= nx < imagem.altura and 0 <= ny < imagem.largura:
+                        # Se o pixel adjacente não tiver sido visitado:
+                        if imagem.pixels[nx][ny] == alvo:
+                            # Adiciona o pixel adjacente na pilha
+                            pilha.append((nx, ny))
+                        # Se estiver ocorrendo uma busca por buracos e for encontrado um objeto
+                        elif label == -2 and imagem.pixels[nx][ny] > 0 and buraco_encontrado == False:
+                            # Dizer que tem buraco e guardar a label do objeto
+                            buraco_encontrado = True
+                            buraco_label = imagem.pixels[nx][ny] - 2
+        
+        # Se um buraco for encontrado:
+        if buraco_encontrado == True:
+            # Aumentar a contagem de buracos para o devido objeto
+            resultados[buraco_label] += 1
 
 
     """
@@ -51,21 +68,42 @@ class Contador:
             Retorna:
                 - None
     """
+    @staticmethod
     def adicionar_padding(imagem):
+        imagem_padding = []
         # Adicionar padding de 1
-        padded_matrix = []
         for i in range(imagem.altura+2):
             if i == 0 or i == imagem.altura+1:
                 # Adicionar padding na primeira e na última linha
-                padded_matrix.append([0]*(imagem.largura+2))
+                imagem_padding.append([0]*(imagem.largura+2))
             else:
                 # Adicionar padding na coluna da esquerda e da direita
                 row = [0] + imagem.pixels[i-1] + [0]
-                padded_matrix.append(row)
+                imagem_padding.append(row)
 
+        # Substituir os valores da imagem anterior pelos da nova imagem
         imagem.altura += 2
         imagem.largura += 2
-        imagem.pixels = padded_matrix
+        imagem.pixels = imagem_padding
+
+
+    """
+        Método que verifica a quantidade de buracos nos objetos de uma imagem
+            Recebe:
+                - imagem: objeto Imagem_PBM
+                - resultados: vetor que guarda quantos buracos existem em cada objeto
+            Retorna:
+                - None
+    """
+    @staticmethod
+    def tem_buracos(imagem, resultados):
+        # Verificar cada pixel da imagem
+        for i in range(imagem.altura):
+            for j in range(imagem.largura):
+                # Se o pixel atual for preto, aumentar a contagem e marcar os conectados
+                 if imagem.pixels[i][j] == 0:
+                    Contador.marcar_conectados(imagem, i, j, -2, 0, resultados)
+
 
     """
         Método que conta quantas figuras existem na imagem.
@@ -97,7 +135,10 @@ class Contador:
         Contador.adicionar_padding(imagem)
 
         # Preencher o fundo com -1
-        Contador.marcar_conectados(imagem, 0, 0, -1, 0)
+        Contador.marcar_conectados(imagem)
+
+        # Chamar método de contar buracos
+        Contador.tem_buracos(imagem, resultados)
 
         # Retornar contagem
         return resultados
