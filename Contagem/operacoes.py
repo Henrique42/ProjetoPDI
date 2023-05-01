@@ -18,35 +18,30 @@ class Contador:
     def marcar_conectados(imagem, i, j, label, alvo):
         # Pilha para saber se ainda existem pixels que precisam ser marcados
         pilha = [(i, j)]
+        vizinhaca = []
+
+        # Definição da vizinhaça a ser analisada
+        if alvo == 1:
+            vizinhaca = [(0, 1), (0, -1), (1, 0), (-1, 0)]
+        elif alvo == 0:
+            vizinhaca = [(0, 1), (0, -1), (1, 0), (-1, 0)]
         
         while pilha:
             x, y = pilha.pop()
+
             # Se o pixel for preto:
             if imagem.pixels[x][y] == alvo:
-                # Para um objeto
-                if alvo == 1:
-                    # Marcar como visitado
-                    imagem.pixels[x][y] = label
-                    # Checagem da vizinhança 4
-                    for dx, dy in [(0, 1), (0, -1), (1, 0), (-1, 0)]:
-                        # Obtem as coordenadas do pixel adjacente
-                        nx, ny = x + dx, y + dy
-                        # Se o pixel adjacente não tiver sido visitado:
-                        if 0 <= nx < imagem.altura and 0 <= ny < imagem.largura and imagem.pixels[nx][ny] == 1:
-                            # Adiciona o pixel adjacente na pilha
-                            pilha.append((nx, ny))
-                # Para o background
-                elif alvo == 0:
-                    # Marcar como visitado
-                    imagem.pixels[x][y] = -1
-                    # Checagem da vizinhança 4
-                    for dx, dy in [(0, 1), (0, -1), (1, 0), (-1, 0)]:
-                        # Obtem as coordenadas do pixel adjacente
-                        nx, ny = x + dx, y + dy
-                        # Se o pixel adjacente não tiver sido visitado:
-                        if 0 <= nx < imagem.altura and 0 <= ny < imagem.largura and imagem.pixels[nx][ny] == 0:
-                            # Adiciona o pixel adjacente na pilha
-                            pilha.append((nx, ny))
+                # Marcar como visitado
+                imagem.pixels[x][y] = label
+                
+                # Checagem da vizinhança
+                for dx, dy in vizinhaca:
+                    # Obtem as coordenadas do pixel adjacente
+                    nx, ny = x + dx, y + dy
+                    # Se o pixel adjacente não tiver sido visitado:
+                    if 0 <= nx < imagem.altura and 0 <= ny < imagem.largura and imagem.pixels[nx][ny] == alvo:
+                        # Adiciona o pixel adjacente na pilha
+                        pilha.append((nx, ny))
 
 
     """
@@ -102,7 +97,7 @@ class Contador:
         Contador.adicionar_padding(imagem)
 
         # Preencher o fundo com -1
-        Contador.marcar_conectados(imagem, i, j, count + 1, 0)
+        Contador.marcar_conectados(imagem, 0, 0, -1, 0)
 
         # Retornar contagem
         return resultados
